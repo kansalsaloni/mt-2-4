@@ -1,0 +1,204 @@
+Create a form with proper form validation using JavaScript (name, email, phone number, password, age, gender, date, color picker)
+
+html file
+------------
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Registration Form</h1>
+    <form id="registrationForm" novalidate>
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" id="name" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" required>
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone Number:</label>
+        <input type="tel" id="phone" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" required>
+      </div>
+      <div class="form-group">
+        <label for="age">Age:</label>
+        <input type="number" id="age" required>
+      </div>
+      <div class="form-group">
+        <label for="gender">Gender:</label>
+        <select id="gender" required>
+          <option value="">Select Gender</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="date">Date:</label>
+        <input type="date" id="date" required>
+      </div>
+      <div class="form-group">
+        <label for="color">Favorite Color:</label>
+        <input type="color" id="color" required>
+      </div>
+      <div class="form-group">
+        <button type="submit">Submit</button>
+      </div>
+    </form>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+css file
+---------
+.container {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.form-group {
+  margin-bottom: 10px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="password"],
+input[type="number"],
+select,
+button[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+}
+
+button[type="submit"] {
+  background-color: #4CAF50;
+  color: #fff;
+  cursor: pointer;
+}
+
+.error {
+  color: red;
+}
+
+js file
+----------
+const registrationForm = document.getElementById('registrationForm');
+
+registrationForm.addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  const nameInput = document.getElementById('name');
+  const emailInput = document.getElementById('email');
+  const phoneInput = document.getElementById('phone');
+  const passwordInput = document.getElementById('password');
+  const ageInput = document.getElementById('age');
+  const genderInput = document.getElementById('gender');
+  const dateInput = document.getElementById('date');
+  const colorInput = document.getElementById('color');
+
+  // Validate name
+  if (nameInput.value.trim() === '') {
+    showError(nameInput, 'Name is required');
+  } else {
+    showSuccess(nameInput);
+  }
+
+  // Validate email
+  if (emailInput.value.trim() === '') {
+    showError(emailInput, 'Email is required');
+  } else if (!isValidEmail(emailInput.value.trim())) {
+    showError(emailInput, 'Invalid email address');
+  } else {
+    showSuccess(emailInput);
+  }
+
+  // Validate phone number
+  if (phoneInput.value.trim() === '') {
+    showError(phoneInput, 'Phone number is required');
+  } else if (!isValidPhoneNumber(phoneInput.value.trim())) {
+    showError(phoneInput, 'Invalid phone number');
+  } else {
+    showSuccess(phoneInput);
+  }
+
+  // Validate password
+  if (passwordInput.value.trim() === '') {
+    showError(passwordInput, 'Password is required');
+  } else {
+    showSuccess(passwordInput);
+  }
+
+  // Validate age
+  if (ageInput.value.trim() === '') {
+    showError(ageInput, 'Age is required');
+  } else if (isNaN(ageInput.value.trim())) {
+    showError(ageInput, 'Invalid age');
+  } else {
+    showSuccess(ageInput);
+  }
+
+  // Validate gender
+  if (genderInput.value === '') {
+    showError(genderInput, 'Gender is required');
+  } else {
+    showSuccess(genderInput);
+  }
+
+  // Validate date
+  if (dateInput.value.trim() === '') {
+    showError(dateInput, 'Date is required');
+  } else {
+    showSuccess(dateInput);
+  }
+
+  // Validate color
+  if (colorInput.value.trim() === '') {
+    showError(colorInput, 'Color is required');
+  } else {
+    showSuccess(colorInput);
+  }
+});
+
+function showError(input, message) {
+  const formGroup = input.parentElement;
+  const errorElement = formGroup.querySelector('.error');
+
+  formGroup.classList.add('error');
+  errorElement.innerText = message;
+}
+
+function showSuccess(input) {
+  const formGroup = input.parentElement;
+  formGroup.classList.remove('error');
+  const errorElement = formGroup.querySelector('.error');
+  errorElement.innerText = '';
+}
+
+function isValidEmail(email) {
+  // Regular expression for email validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
+function isValidPhoneNumber(phone) {
+  // Regular expression for phone number validation
+  const phoneRegex = /^\d{10}$/;
+  return phoneRegex.test(phone);
+}
